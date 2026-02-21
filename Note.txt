@@ -1,0 +1,14 @@
+# TO Run the code 
+=> npm run dev
+
+
+# To start the venv 
+.\venv\Scripts\activate
+
+# To Stop the venv
+deactivate
+
+# To create venv
+python -m venv venv_name
+
+#Download the require Ollama

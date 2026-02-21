@@ -1,0 +1,13 @@
+.vta-container { border: 1px solid #e6e6e6; padding: 12px; border-radius: 8px; background: #fff; }
+.vta-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.vta-actions { display:flex; gap:12px; align-items:center; }
+.vta-badge { padding:6px 10px; border-radius:12px; font-size:12px; }
+.vta-badge.idle { background:#f3f4f6; color:#333 }
+.vta-badge.transcribing { background:#d946ef; color:white }
+.vta-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap:10px; }
+.vta-box { border:1px solid #f1f1f1; padding:8px; border-radius:6px; background:#fafafa }
+.vta-box.active { box-shadow: 0 0 0 3px rgba(99,102,241,0.08); }
+.vta-box-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.vta-btn { margin-left:8px; padding:6px 8px; font-size:12px; }
+.vta-btn.danger { background:#fee2e2; border:1px solid #fecaca }
+.vta-live-overlay { margin-top:6px; padding:6px; background:#fff7ed; border:1px dashed #f59e0b }

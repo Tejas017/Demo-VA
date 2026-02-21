@@ -1,0 +1,475 @@
+.appointments-root {
+                display: flex;
+                flex-direction: row;
+                align-items: flex-start;
+                gap: 40px;
+                max-width: 1100px;
+                margin: 40px auto;
+                padding: 32px;
+                background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+                border-radius: 18px;
+                box-shadow: 0 6px 32px rgba(60, 72, 100, 0.12);
+            }
+            .appointments-history {
+                flex: 2;
+                min-width: 350px;
+                background: #fff;
+                border-radius: 14px;
+                box-shadow: 0 2px 12px rgba(99, 102, 241, 0.07);
+                padding: 24px 18px;
+            }
+            .appointments-history-title {
+                color: #3730a3;
+                font-size: 1.5rem;
+                margin-bottom: 18px;
+                font-weight: 700;
+                letter-spacing: 1px;
+            }
+            .appointments-no-history {
+                color: #64748b;
+                font-style: italic;
+                text-align: center;
+            }
+            .appointments-history-table-wrapper {
+                overflow-x: auto;
+            }
+            .appointments-history-table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                background: #f1f5f9;
+                border-radius: 10px;
+                overflow: hidden;
+                box-shadow: 0 1px 8px rgba(99, 102, 241, 0.08);
+            }
+            .appointments-history-table th,
+            .appointments-history-table td {
+                padding: 10px 14px;
+                text-align: left;
+            }
+            .appointments-history-table th {
+                background: #6366f1;
+                color: #fff;
+                font-weight: 600;
+                font-size: 15px;
+                border-bottom: 2px solid #818cf8;
+            }
+            .appointments-history-table tr.even {
+                background: #e0e7ff;
+            }
+            .appointments-history-table tr.odd {
+                background: #f8fafc;
+            }
+            .appointments-type-badge {
+                display: inline-block;
+                background: linear-gradient(90deg, #818cf8 0%, #a5b4fc 100%);
+                color: #312e81;
+                border-radius: 8px;
+                padding: 2px 10px;
+                font-size: 13px;
+                font-weight: 500;
+                letter-spacing: 0.5px;
+            }
+            .appointments-delete-btn {
+                background: #f87171;
+                color: #fff;
+                border: none;
+                border-radius: 6px;
+                padding: 6px 14px;
+                font-size: 14px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: background 0.2s;
+            }
+            .appointments-delete-btn:hover {
+                background: #dc2626;
+            }
+            .appointments-form-container {
+                flex: 1;
+                min-width: 240px;
+                max-width: 320px;
+                background: rgba(255,255,255,0.97);
+                border: 1.5px solid #a5b4fc;
+                border-radius: 12px;
+                padding: 18px 14px 22px 14px;
+                box-shadow: 0 2px 12px rgba(99, 102, 241, 0.07);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .appointments-form-title {
+                font-size: 1.2rem;
+                color: #3730a3;
+                font-weight: 700;
+                margin-bottom: 12px;
+            }
+            .appointments-form {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+            .appointments-label {
+                display: flex;
+                flex-direction: column;
+                font-weight: 500;
+                color: #3730a3;
+                font-size: 14px;
+                gap: 4px;
+            }
+            .appointments-input {
+                margin-top: 2px;
+                padding: 7px 10px;
+                border: 1.5px solid #c7d2fe;
+                border-radius: 7px;
+                font-size: 14px;
+                background: #f1f5f9;
+                color: #312e81;
+                outline: none;
+                transition: border 0.2s;
+            }
+            .appointments-input:focus {
+                border: 1.5px solid #6366f1;
+            }
+            .appointments-btn-group {
+                display: flex;
+                gap: 10px;
+                justify-content: center;
+                margin-top: 8px;
+            }
+            .appointments-btn {
+                padding: 7px 18px;
+                border-radius: 7px;
+                border: none;
+                background: linear-gradient(90deg, #6366f1 0%, #818cf8 100%);
+                color: #fff;
+                font-weight: 600;
+                font-size: 14px;
+                cursor: pointer;
+                box-shadow: 0 2px 8px rgba(99, 102, 241, 0.13);
+                transition: background 0.2s, transform 0.1s;
+            }
+            .appointments-btn:hover {
+                background: linear-gradient(90deg, #818cf8 0%, #6366f1 100%);
+            }
+
+            
+            /* Mic widget styles (copy into App.css or MicWidget.css and import if separate) */
+.mic-widget {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 9999;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+}
+
+.mic-button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(135deg,#6b5bff,#2dd4bf);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+  cursor: pointer;
+  transition: transform .12s ease, box-shadow .12s ease;
+  font-size: 18px;
+}
+
+.mic-button:hover { transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,.22); }
+.mic-button.listening { background: linear-gradient(135deg,#ff6b6b,#ffb86b); }
+
+.mic-panel {
+  width: 280px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  color: #111;
+  font-size: 14px;
+  transform-origin: bottom right;
+  animation: pop .12s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(.96); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.mic-row { display:flex; flex-direction: column; gap:6px; margin-bottom:10px; }
+.mic-label { font-weight: 600; font-size: 12px; color: #444; }
+.mic-input, .mic-select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #e6e6e6;
+  font-size: 13px;
+}
+
+.mic-actions { display:flex; gap:8px; justify-content: flex-end; align-items: center; }
+.start-btn {
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  color: white;
+  background: #4f46e5;
+}
+.start-btn.stop { background: #ef4444; }
+.close-btn {
+  padding: 6px 8px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+}
+
+.contact-form-container {
+  max-width: 420px;
+  margin: 3rem auto;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, #e3f0ff 0%, #f9f9f9 100%);
+  border-radius: 18px;
+  box-shadow: 0 6px 32px rgba(30, 64, 175, 0.10);
+  border: 1px solid #e0e7ef;
+}
+.contact-form-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+}
+.contact-form-desc {
+  text-align: center;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+.contact-form-success {
+  text-align: center;
+  color: #2e7d32;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 1rem;
+  background: #e8f5e9;
+  border-radius: 8px;
+}
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.contact-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.contact-form-input,
+.contact-form-textarea {
+  padding: 0.7rem 1rem;
+  border: 1px solid #bfc8e6;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: #f7fbff;
+  transition: border-color 0.2s;
+}
+.contact-form-input:focus,
+.contact-form-textarea:focus {
+  border-color: #1976d2;
+  outline: none;
+}
+.contact-form-btn {
+  background: linear-gradient(90deg, #1976d2 60%, #42a5f5 100%);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
+  transition: background 0.2s;
+}
+.contact-form-btn:hover {
+  background: linear-gradient(90deg, #1565c0 60%, #1976d2 100%);
+}
+
+/* Contact Page Layout */
+.contact-page-wrapper {
+  display: flex;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  flex-wrap: wrap;
+}
+
+.contact-info-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.contact-info-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+}
+
+.contact-info-subtitle {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Contact Info Cards */
+.contact-info-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.contact-info-card {
+  background: linear-gradient(135deg, #ffffff 0%, #f5f9ff 100%);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(30, 64, 175, 0.08);
+  border: 1px solid #e0e7ef;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.contact-info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(30, 64, 175, 0.15);
+  border-color: #1976d2;
+}
+
+.contact-card-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.contact-info-card:hover .contact-card-icon {
+  transform: rotate(360deg);
+}
+
+.contact-info-card h3 {
+  font-size: 1.2rem;
+  color: #1976d2;
+  margin: 0 0 0.3rem 0;
+}
+
+.contact-info-card p {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* Social Media Section */
+.contact-social-section {
+  background: linear-gradient(135deg, #e3f0ff 0%, #f9f9f9 100%);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.contact-social-title {
+  font-size: 1.5rem;
+  color: #1976d2;
+  margin-bottom: 1.5rem;
+}
+
+.contact-social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.contact-social-link {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contact-social-link:hover {
+  transform: translateY(-5px) scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.contact-social-link.facebook {
+  background: linear-gradient(135deg, #1877f2, #42b0ff);
+}
+
+.contact-social-link.twitter {
+  background: linear-gradient(135deg, #1da1f2, #0d95e8);
+}
+
+.contact-social-link.linkedin {
+  background: linear-gradient(135deg, #0077b5, #00a0dc);
+}
+
+.contact-social-link.instagram {
+  background: linear-gradient(135deg, #e1306c, #fd1d1d, #f77737);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .contact-page-wrapper {
+    flex-direction: column;
+  }
+  
+  .contact-info-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+/* Voice Assistant - Field Highlighting */
+input.voice-highlight,
+select.voice-highlight,
+textarea.voice-highlight {
+  animation: voicePulse 1.5s ease-in-out;
+  border: 2px solid #6366f1 !important;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2) !important;
+}
+
+@keyframes voicePulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0.3);
+  }
+}
+
+/* Dropdown visual enhancement when opened by voice */
+select:focus {
+  outline: 2px solid #6366f1;
+  outline-offset: 2px;
+}
+

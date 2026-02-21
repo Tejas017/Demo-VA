@@ -1,0 +1,3 @@
+Currently using the WebkitSpeech Recognition for wake word 
+and Whisper for STT 
+Ollama as Backend Advance NLP

@@ -1,0 +1,115 @@
+import React, { useEffect, useRef } from "react";
+import { useVoiceAssistant } from "../contexts/VoiceAssistantContext";
+
+export default function VoiceAssistant() {
+  const { listening, wakeWord, hotkey, setPaused } = useVoiceAssistant();
+
+  const recognitionRef = useRef(null);
+  const activeRef = useRef(false);
+  const isRunningRef = useRef(false);
+  const pausedRef = useRef(false);
+
+  // ✅ Hold-to-talk hotkey
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key.toUpperCase() === hotkey && pausedRef.current) {
+        pausedRef.current = false;
+        setPaused(false);
+        console.log(`🎙️ Mic resumed (holding ${hotkey})`);
+      }
+    };
+    const handleKeyUp = (e) => {
+      if (e.key.toUpperCase() === hotkey && !pausedRef.current) {
+        pausedRef.current = true;
+        setPaused(true);
+        console.log(`⏸️ Mic paused (released ${hotkey})`);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+    };
+  }, [hotkey, setPaused]);
+
+  // Speech recognition setup
+  useEffect(() => {
+    if (!("webkitSpeechRecognition" in window)) {
+      console.warn("Speech Recognition not supported.");
+      return;
+    }
+
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.continuous = true;
+    recognition.interimResults = false;
+
+    recognition.onstart = () => {
+      isRunningRef.current = true;
+      document.body.classList.add("mic-active"); // 🔴 Add UI feedback
+      console.log("🎧 Recognition started");
+    };
+
+    recognition.onend = () => {
+      isRunningRef.current = false;
+      document.body.classList.remove("mic-active");
+      if (activeRef.current) {
+        setTimeout(() => {
+          if (!isRunningRef.current) recognition.start();
+        }, 500);
+      }
+    };
+
+    recognition.onresult = (event) => {
+      const transcript = event.results[event.results.length - 1][0].transcript;
+      const normalized = transcript.trim().toLowerCase();
+      const normalizedWake = wakeWord.trim().toLowerCase();
+
+      if (pausedRef.current) {
+        console.log("⏸️ Ignored (paused)");
+        return;
+      }
+
+      console.log("🎤 Heard:", transcript);
+
+      if (normalized.includes(normalizedWake)) {
+        console.log(`✅ Wake word detected: "${wakeWord}"`);
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      isRunningRef.current = false;
+      if (
+        activeRef.current &&
+        !["aborted", "not-allowed", "service-not-allowed"].includes(event.error)
+      ) {
+        setTimeout(() => {
+          if (!isRunningRef.current) recognition.start();
+        }, 1000);
+      }
+    };
+
+    recognitionRef.current = recognition;
+  }, [wakeWord]);
+
+  // Start/stop listening
+  useEffect(() => {
+    const recognition = recognitionRef.current;
+    if (!recognition) return;
+
+    if (listening) {
+      activeRef.current = true;
+      if (!isRunningRef.current) recognition.start();
+    } else {
+      activeRef.current = false;
+      if (isRunningRef.current) recognition.stop();
+    }
+  }, [listening]);
+
+  return null;
+}
