@@ -1,0 +1,321 @@
+================================================================================
+                   VOICE ASSISTANT - SETUP & INSTALLATION GUIDE
+================================================================================
+
+PROJECT OVERVIEW:
+- Frontend: React + Vite (Vue-based build tool)
+- Backend: Python Flask + WebSocket
+- Audio Processing: Whisper STT (Speech-to-Text)
+
+================================================================================
+SYSTEM REQUIREMENTS
+================================================================================
+
+1. NODE.JS & NPM
+   - Download: https://nodejs.org/ (LTS version recommended)
+   - Version: Node.js 16+ required
+   - Install globally, verify with:
+     $ node --version
+     $ npm --version
+
+2. PYTHON
+   - Download: https://www.python.org/downloads/
+   - Version: Python 3.8+ required
+   - Install and add to PATH
+   - Verify with:
+     $ python --version
+
+3. FFMPEG (Required for audio conversion)
+   - Windows: Download from https://ffmpeg.org/download.html
+   - Add ffmpeg to PATH environment variable
+   - Verify with:
+     $ ffmpeg -version
+   - This is CRITICAL - Whisper and pydub need ffmpeg to convert audio formats
+
+4. GIT (Optional, for version control)
+   - Download: https://git-scm.com/download/win
+
+================================================================================
+BACKEND SETUP (Python)
+================================================================================
+
+1. CREATE VIRTUAL ENVIRONMENT
+   $ cd backend
+   $ python -m venv venv
+   
+2. ACTIVATE VIRTUAL ENVIRONMENT
+   Windows (PowerShell):
+   $ .\venv\Scripts\Activate.ps1
+   
+   Windows (Command Prompt):
+   $ venv\Scripts\activate.bat
+   
+   Linux/Mac:
+   $ source venv/bin/activate
+
+3. INSTALL PYTHON DEPENDENCIES
+   $ pip install -r requirements.txt
+   
+   This will install:
+   - flask==3.0.0                    (Web framework)
+   - flask-cors==4.0.0               (Cross-Origin Resource Sharing)
+   - flask-socketio==5.3.6           (WebSocket support)
+   - python-socketio==5.11.0         (Socket.IO protocol)
+   - openai-whisper==20231117        (Speech-to-Text model)
+   - pydub==0.25.1                   (Audio processing)
+   - numpy==1.24.3                   (Numerical computing)
+
+4. OPTIONAL - FASTER WHISPER (GPU acceleration)
+   For faster transcription on GPU:
+   $ pip install faster-whisper
+   Or with CUDA support:
+   $ pip install faster-whisper[gpu]
+
+5. OPTIONAL - SPACY NLP (Advanced command parsing)
+   $ pip install spacy
+   $ python -m spacy download en_core_web_sm
+
+6. OPTIONAL - OLLAMA (Advanced NLP fallback)
+   - Download: https://ollama.ai/
+   - Run: ollama run gemma3:1b
+   - This provides fallback NLP for complex queries
+
+================================================================================
+FRONTEND SETUP (React + Node.js)
+================================================================================
+
+1. INSTALL DEPENDENCIES
+   $ cd voice-assist
+   $ npm install
+   
+   This will install:
+   - react@19.1.1                    (UI framework)
+   - react-dom@19.1.1                (React DOM rendering)
+   - react-router-dom@7.9.4          (Page navigation)
+   - socket.io-client@4.7.2          (WebSocket client)
+   - react-icons@5.5.0               (Icon library)
+   - vite@7.1.7                      (Build tool)
+
+2. BUILD PROJECT (Production)
+   $ npm run build
+   
+   Output will be in: voice-assist/dist/
+
+3. PREVIEW BUILD (Test production build locally)
+   $ npm run preview
+
+================================================================================
+RUNNING THE APPLICATION
+================================================================================
+
+TERMINAL 1 - START BACKEND (Python):
+   1. Open PowerShell/Command Prompt
+   2. Navigate: cd C:\Users\ty118716\Desktop\Demo-VA\backend
+   3. Activate venv: .\venv\Scripts\Activate.ps1
+   4. Run: python demo.py
+   5. Backend will start on: http://localhost:5000
+   6. WebSocket available on: ws://localhost:5000
+
+TERMINAL 2 - START FRONTEND (React):
+   1. Open new PowerShell/Command Prompt
+   2. Navigate: cd C:\Users\ty118716\Desktop\Demo-VA\voice-assist
+   3. Run: npm run dev
+   4. Frontend will start on: http://localhost:5173 (or shown in output)
+   5. Open browser and navigate to the shown URL
+
+================================================================================
+ENVIRONMENT CONFIGURATION
+================================================================================
+
+BACKEND ENVIRONMENT VARIABLES (Optional):
+   Set in demo.py or via .env file:
+   
+   ENABLE_HTTPS=false          # Set to 'true' for HTTPS (development only)
+   VITE_BACKEND_URL=http://localhost:5000
+
+FRONTEND ENVIRONMENT VARIABLES:
+   Create file: voice-assist/.env
+   
+   VITE_BACKEND_URL=http://localhost:5000
+
+================================================================================
+AUDIO SETUP & CONFIGURATION
+================================================================================
+
+MICROPHONE:
+   - Browser will request microphone permission on first use
+   - Accept the permission prompt
+   - You'll be able to select microphone in Voice Assistant settings
+
+WAKE WORD (Default: "Java"):
+   - Can be changed in Voice Assistant Settings (gear icon)
+   - Press and hold to activate recording after wake word
+   - Release to stop recording
+
+HOTKEY (Default: F9):
+   - Press F9 to pause/resume assistant
+   - Configurable in Voice Assistant Settings
+
+LANGUAGE (Default: en-US):
+   - Configured in Voice Assistant context
+   - Currently supports: en-US, es-ES, fr-FR, etc.
+
+STT PROVIDER (Default: "whisper"):
+   - Options: "whisper" (offline, Whisper model) or "webspeech" (browser STT)
+   - Set in Voice Assistant Settings
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+ISSUE: "ffmpeg not found" error
+   FIX: 
+   - Install ffmpeg from https://ffmpeg.org/download.html
+   - Add to Windows PATH: 
+     1. Open Environment Variables
+     2. Add ffmpeg/bin directory to PATH
+     3. Restart terminal
+
+ISSUE: ModuleNotFoundError for Whisper
+   FIX:
+   - Ensure venv is activated
+   - Run: pip install openai-whisper
+
+ISSUE: "Port 5000 already in use"
+   FIX:
+   - Change port in demo.py (line ~527):
+     socketio.run(app, host="0.0.0.0", port=5001)
+   - Update frontend VITE_BACKEND_URL to match new port
+
+ISSUE: Microphone access denied
+   FIX:
+   - Check browser permissions
+   - Allow microphone when prompted
+   - Windows: Settings → Privacy → Microphone → Allow apps to access microphone
+
+ISSUE: No audio detected / transcription fails
+   FIX:
+   - Run the "5s Audio Test" button in voice assistant widget
+   - Check microphone input level indicator
+   - Try different microphone in settings
+   - Check ffmpeg installation
+
+ISSUE: WebSocket connection failed
+   FIX:
+   - Ensure backend is running on correct port
+   - Check VITE_BACKEND_URL matches backend URL
+   - Try setting ENABLE_HTTPS=false if using HTTP
+
+================================================================================
+PRODUCTION DEPLOYMENT
+================================================================================
+
+1. BUILD FRONTEND
+   $ cd voice-assist
+   $ npm run build
+   
+2. SERVE FRONTEND
+   - Use nginx, Apache, or any static file server
+   - Point to: voice-assist/dist/
+
+3. RUN BACKEND
+   - Use production WSGI server (Gunicorn)
+   - Install: pip install gunicorn
+   - Run: gunicorn --worker-class eventlet -w 1 demo:app
+
+4. ENVIRONMENT VARIABLES
+   - Set ENABLE_HTTPS=true for HTTPS
+   - Configure CORS properly for production domain
+   - Set appropriate SECRET_KEY if needed
+
+================================================================================
+USEFUL COMMANDS
+================================================================================
+
+BACKEND:
+   Start development server:
+   $ python demo.py
+   
+   Start with Gunicorn (production):
+   $ gunicorn --worker-class eventlet -w 1 demo:app
+
+FRONTEND:
+   Development server:
+   $ npm run dev
+   
+   Build for production:
+   $ npm run build
+   
+   Preview production build:
+   $ npm run preview
+   
+   Linting:
+   $ npm run lint
+
+PYTHON VIRTUAL ENVIRONMENT:
+   Activate (Windows):
+   $ .\venv\Scripts\Activate.ps1
+   
+   Deactivate:
+   $ deactivate
+   
+   List installed packages:
+   $ pip list
+   
+   Freeze requirements:
+   $ pip freeze > requirements.txt
+
+================================================================================
+FILE STRUCTURE
+================================================================================
+
+Demo-VA/
+├── backend/
+│   ├── demo.py                 (Main Flask app with WebSocket)
+│   ├── requirements.txt         (Python dependencies)
+│   ├── config/
+│   │   └── form_map.py         (Field mapping configuration)
+│   └── utils/
+│       └── enhanced_command_router.py  (NLP command parsing)
+│
+└── voice-assist/
+    ├── package.json            (Node.js dependencies)
+    ├── vite.config.js         (Vite configuration)
+    ├── src/
+    │   ├── App.jsx            (Main React component)
+    │   ├── main.jsx           (Entry point)
+    │   ├── contexts/
+    │   │   └── VoiceAssistantContext.jsx  (Global settings)
+    │   ├── components/
+    │   │   ├── VoiceAssistant.jsx        (Main voice logic)
+    │   │   ├── AudioWorklet.jsx          (VAD audio processing)
+    │   │   ├── VoiceTextAreas.jsx        (Dictation areas)
+    │   │   └── ... (other page components)
+    │   ├── utils/
+    │   │   ├── audioEncoder.js          (Audio conversion)
+    │   │   └── fieldFormatter.js        (Form field formatting)
+    │   └── worklets/
+    │       └── vad-processor.js         (Voice Activity Detection)
+    └── dist/                  (Built production files)
+
+================================================================================
+SUPPORT & DOCUMENTATION
+================================================================================
+
+Key Technologies:
+- Whisper: https://github.com/openai/whisper
+- Flask: https://flask.palletsprojects.com/
+- React: https://react.dev/
+- Vite: https://vitejs.dev/
+- Socket.IO: https://socket.io/
+- pydub: https://github.com/jiaaro/pydub
+
+Troubleshooting URLs:
+- ffmpeg: https://ffmpeg.org/
+- Node.js: https://nodejs.org/
+- Python: https://www.python.org/
+- Whisper Setup: https://github.com/openai/whisper#setup
+
+================================================================================
+                                END OF SETUP GUIDE
+================================================================================
